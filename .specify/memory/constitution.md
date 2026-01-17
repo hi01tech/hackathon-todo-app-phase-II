@@ -1,55 +1,64 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+Version change: 0.0.0 -> 1.0.0
+- Initial Constitution Ratification
+- Added Principles: Spec-First, Correctness, Security-By-Design, Reproducibility, Separation of Concerns
+- Added Sections: Technology & Architecture Constraints, Security & Quality Standards
+- Templates requiring updates: ✅ None (Alignment verified)
+-->
+
+# Todo Full-Stack Web Application (Spec-Driven, Agentic Development) Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-First Development (NON-NEGOTIABLE)
+All implementation must be derived strictly from specs. No manual coding is permitted; all code must be generated via Claude Code from approved specs. If a requirement is not in the spec, it does not exist. Database schema changes must be reflected in specs before implementation.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Correctness Over Speed
+No assumptions outside the spec are allowed. It is better to stop and ask for clarification than to guess. All API behavior must match the written specification exactly.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Security-By-Design
+Authentication and authorization are enforced at every layer. All API endpoints require valid JWT authentication. Requests without valid tokens must return 401 Unauthorized. Users may only access and modify their own tasks. No trust in client-provided user identifiers.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Reproducibility
+All steps, prompts, and decisions must be traceable. The workflow of Spec → Plan → Tasks → Implementation must be followed strictly.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Separation of Concerns
+Frontend, backend, and auth boundaries must be clearly defined. Authentication must be stateless using JWTs. User data isolation must be enforced at the backend level.
 
-### [PRINCIPLE_6_NAME]
+## Technology & Architecture Constraints
 
+### Stack Requirements
+- **Frontend**: Next.js 16+ using App Router
+- **Backend**: Python FastAPI
+- **ORM**: SQLModel
+- **Database**: Neon Serverless PostgreSQL
+- **Authentication**: Better Auth (JWT-based)
 
-[PRINCIPLE__DESCRIPTION]
+### Workflow Constraints
+- Must follow the Agentic Dev Stack workflow: Spec → Plan → Tasks → Implementation.
+- REST APIs must follow proper HTTP semantics and status codes.
+- Environment-based configuration (no secrets hardcoded).
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Security & Quality Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Security Standards
+- JWT signature must be verified using shared secret.
+- Token expiry must be enforced.
+- All database queries must be user-scoped (row-level security logic in application).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Quality Standards
+- Clear, deterministic API contracts.
+- Proper request/response validation.
+- Consistent error handling.
+- Readable, maintainable generated code.
+- Logging for authentication and critical operations.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other technical practices.
+- Amendments require documentation and approval.
+- All PRs and reviews must verify compliance with these principles.
+- Complexity must be justified against the "Correctness Over Speed" and "Separation of Concerns" principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-01-17 | **Last Amended**: 2026-01-17

@@ -113,7 +113,7 @@ You are not expected to solve every problem autonomously. You MUST invoke the us
 1.  **Ambiguous Requirements:** When user intent is unclear, ask 2-3 targeted clarifying questions before proceeding.
 2.  **Unforeseen Dependencies:** When discovering dependencies not mentioned in the spec, surface them and ask for prioritization.
 3.  **Architectural Uncertainty:** When multiple valid approaches exist with significant tradeoffs, present options and get user's preference.
-4.  **Completion Checkpoint:** After completing major milestones, summarize what was done and confirm next steps. 
+4.  **Completion Checkpoint:** After completing major milestones, summarize what was done and confirm next steps.
 
 ## Default policies (must follow)
 - Clarify and plan first - keep business understanding separate from technical plan and carefully architect and implement.
@@ -208,3 +208,41 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Project Configuration & Agent Mapping
+
+### Agent Usage Instructions
+- **Auth Agent (`auth-specialist`)**: Use for all authentication implementation tasks, specifically involving Better Auth, JWT handling, and security flows.
+- **Frontend Agent (`nextjs-ui-generator`)**: Use for all frontend development tasks in Next.js 16+, App Router, and specialized UI components.
+- **DB Agent (`neon-db-agent`)**: Use for all database operations, schema design, SQLModel definitions, and Neon Serverless PostgreSQL interactions.
+- **Backend Agent (`fastapi-backend-implementer`)**: Use for FastAPI development, REST endpoints, and backend business logic.
+
+### Project Requirements: Phase II - Todo Full-Stack Web Application
+
+**Objective:** Using Claude Code and Spec-Kit Plus transform the console app into a modern multi-user web application with persistent storage.
+
+**Methodology:** Agentic Dev Stack workflow: Write spec → Generate plan → Break into tasks → Implement via Claude Code.
+
+**Core Features:**
+- Implement all 5 Basic Level features as a web application
+- Create RESTful API endpoints
+- Build responsive frontend interface
+- Store data in Neon Serverless PostgreSQL database
+- Authentication – Implement user signup/signin using Better Auth
+
+**Technology Stack:**
+- **Frontend:** Next.js 16+ (App Router)
+- **Backend:** Python FastAPI
+- **ORM:** SQLModel
+- **Database:** Neon Serverless PostgreSQL
+- **Spec-Driven:** Claude Code + Spec-Kit Plus
+- **Authentication:** Better Auth
+
+**Authentication Implementation Details:**
+- Better Auth issues JWT (JSON Web Token) tokens on login.
+- **Flow:**
+  1. User logs in on Frontend → Better Auth creates session & issues JWT.
+  2. Frontend makes API call → Includes JWT in `Authorization: Bearer <token>` header.
+  3. Backend receives request → Extracts token, verifies signature using shared secret.
+  4. Backend identifies user → Decodes token for user ID/email, matches with URL ID.
+  5. Backend filters data → Returns only tasks belonging to that user.
