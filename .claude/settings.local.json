@@ -20,7 +20,8 @@
       "Bash(do echo \"Testing port $port:\")",
       "Bash(done)",
       "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }
