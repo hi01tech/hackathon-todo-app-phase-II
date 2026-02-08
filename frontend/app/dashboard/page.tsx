@@ -45,9 +45,9 @@ export default function DashboardPage() {
           return;
         }
       }
-
+    
       const data = await apiClient.getCurrentUser();
-      const email = data.user?.email || data.email || 'User';
+      const email = data.user?.email || 'User';
       setUserEmail(email);
     } catch (err) {
       console.error('Error fetching user profile:', err);
