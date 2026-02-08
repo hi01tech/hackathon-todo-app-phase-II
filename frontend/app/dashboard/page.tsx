@@ -126,13 +126,13 @@ export default function DashboardPage() {
         <div className="min-h-screen p-4 md:p-8">
           <div className="max-w-6xl mx-auto">
             <Navbar userEmail={userEmail} taskStats={taskStats} />
-            <div className="flex justify-center items-center py-32">
+            <div className="flex items-center justify-center py-32">
               <div className="text-center">
                 <div className="relative mb-4">
-                  <div className="w-20 h-20 mx-auto rounded-full border-4 border-slate-200 dark:border-slate-700"></div>
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full border-4 border-transparent border-t-primary-500 border-r-accent-500 animate-spin"></div>
+                  <div className="w-20 h-20 mx-auto border-4 rounded-full border-slate-200 dark:border-slate-700"></div>
+                  <div className="absolute top-0 w-20 h-20 transform -translate-x-1/2 border-4 border-transparent rounded-full left-1/2 border-t-primary-500 border-r-accent-500 animate-spin"></div>
                 </div>
-                <p className="text-slate-600 dark:text-slate-400 font-medium">Loading your tasks...</p>
+                <p className="font-medium text-slate-600 dark:text-slate-400">Loading your tasks...</p>
               </div>
             </div>
           </div>
@@ -149,9 +149,9 @@ export default function DashboardPage() {
 
           {/* Header Section */}
           <div className="mb-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-2">
+                <h1 className="mb-2 text-4xl font-bold text-transparent md:text-5xl bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text">
                   My Tasks
                 </h1>
                 <p className="text-slate-600 dark:text-slate-400">
@@ -166,7 +166,7 @@ export default function DashboardPage() {
                   setShowForm(true);
                   setEditingTask(null);
                 }}
-                className="btn-primary flex items-center justify-center gap-2"
+                className="flex items-center justify-center gap-2 btn-primary"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
@@ -177,16 +177,16 @@ export default function DashboardPage() {
 
             {/* Progress bar */}
             {totalCount > 0 && (
-              <div className="glass-card p-4 rounded-2xl">
+              <div className="p-4 glass-card rounded-2xl">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Progress</span>
                   <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
                     {Math.round((completedCount / totalCount) * 100)}%
                   </span>
                 </div>
-                <div className="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div className="w-full h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
                   <div
-                    className="h-full bg-gradient-to-r from-primary-500 to-accent-600 rounded-full transition-all duration-500 ease-out"
+                    className="h-full transition-all duration-500 ease-out rounded-full bg-gradient-to-r from-primary-500 to-accent-600"
                     style={{ width: `${(completedCount / totalCount) * 100}%` }}
                   ></div>
                 </div>
@@ -216,7 +216,7 @@ export default function DashboardPage() {
 
           {/* Task List */}
           {tasks.length === 0 ? (
-            <div className="glass-card p-12 rounded-3xl">
+            <div className="p-12 glass-card rounded-3xl">
               <EmptyState
                 title="No tasks yet"
                 description="Get started by creating your first task and begin organizing your workflow"
@@ -226,7 +226,7 @@ export default function DashboardPage() {
                       setShowForm(true);
                       setEditingTask(null);
                     }}
-                    className="btn-primary flex items-center gap-2"
+                    className="flex items-center gap-2 btn-primary"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
