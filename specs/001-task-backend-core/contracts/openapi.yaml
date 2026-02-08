@@ -1,0 +1,328 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  description: |
+    RESTful API for managing user tasks. All endpoints are user-scoped via the `user_id` path parameter.
+
+    **Note**: Authentication is deferred to a future spec. The `user_id` is treated as a trusted input.
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+tags:
+  - name: Tasks
+    description: Task CRUD operations
+
+paths:
+  /api/{user_id}/tasks:
+    get:
+      tags: [Tasks]
+      summary: List all tasks for a user
+      description: Returns all tasks belonging to the specified user.
+      operationId: listTasks
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskRead'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags: [Tasks]
+      summary: Create a new task
+      description: Creates a new task for the specified user.
+      operationId: createTask
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRead'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/{user_id}/tasks/{task_id}:
+    get:
+      tags: [Tasks]
+      summary: Get a specific task
+      description: Returns a single task if it belongs to the specified user.
+      operationId: getTask
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRead'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags: [Tasks]
+      summary: Update a task
+      description: Updates a task if it belongs to the specified user. Cannot change user_id.
+      operationId: updateTask
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRead'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags: [Tasks]
+      summary: Delete a task
+      description: Deletes a task if it belongs to the specified user.
+      operationId: deleteTask
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Task deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/{user_id}/tasks/{task_id}/complete:
+    patch:
+      tags: [Tasks]
+      summary: Toggle task completion
+      description: Toggles the `is_completed` status of a task.
+      operationId: toggleTaskComplete
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task completion status toggled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRead'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    userId:
+      name: user_id
+      in: path
+      required: true
+      description: User identifier (owner of tasks)
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+        example: user_123
+
+    taskId:
+      name: task_id
+      in: path
+      required: true
+      description: Task unique identifier (UUID)
+      schema:
+        type: string
+        format: uuid
+        example: 550e8400-e29b-41d4-a716-446655440000
+
+  schemas:
+    TaskCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Task title
+          example: Buy groceries
+        description:
+          type: string
+          nullable: true
+          description: Optional task description
+          example: Milk, eggs, bread
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Task title
+          example: Buy groceries (updated)
+        description:
+          type: string
+          nullable: true
+          description: Task description
+          example: Milk, eggs, bread, butter
+        is_completed:
+          type: boolean
+          description: Task completion status
+          example: true
+
+    TaskRead:
+      type: object
+      required:
+        - id
+        - title
+        - is_completed
+        - user_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Task unique identifier
+          example: 550e8400-e29b-41d4-a716-446655440000
+        title:
+          type: string
+          description: Task title
+          example: Buy groceries
+        description:
+          type: string
+          nullable: true
+          description: Task description
+          example: Milk, eggs, bread
+        is_completed:
+          type: boolean
+          description: Task completion status
+          example: false
+        user_id:
+          type: string
+          description: Owner identifier
+          example: user_123
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp (UTC)
+          example: '2026-01-24T10:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp (UTC)
+          example: '2026-01-24T10:30:00Z'
+
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message
+          example: Task not found
+
+    ValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                    - type: string
+                    - type: integer
+                description: Error location
+              msg:
+                type: string
+                description: Error message
+              type:
+                type: string
+                description: Error type
+
+  responses:
+    NotFound:
+      description: Resource not found (or access denied)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            detail: Task not found
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+          example:
+            detail:
+              - loc: [body, title]
+                msg: field required
+                type: value_error.missing
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            detail: Internal server error

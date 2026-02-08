@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest tests/test_auth.py -v)",
+      "Bash(curl:*)",
+      "Bash(uvicorn:*)",
+      "Bash(npm run dev:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZTkyZGUxNS0wNjk3LTQ0NmEtOTNkYy1jYTAyOTcwMDM1Y2QiLCJleHAiOjE3NzA0MTI4MzIuMDY5ODUyLCJpYXQiOjE3NzAzMjY0MzIuMDY5OTk5LCJ0eXBlIjoiYWNjZXNzIn0.hWCoQ8FIkXw2ohDDIncew8_3XH7628FoqFa23G9nvUw\")",
+      "Bash(dir:*)",
+      "Bash(tree:*)",
+      "Bash(npm ls:*)",
+      "Bash(python -c:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(python:*)",
+      "Bash(taskkill:*)",
+      "Bash(start /B npm run dev:*)",
+      "Bash(1 ping -n 20 127.0.0.1 curl -s http://localhost:3000)",
+      "Bash(for port in 3000 3001 3002 3003)",
+      "Bash(do echo \"Testing port $port:\")",
+      "Bash(done)",
+      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(ls:*)"
+    ]
+  }
+}
